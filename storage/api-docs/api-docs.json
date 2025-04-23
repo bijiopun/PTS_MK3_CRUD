@@ -361,6 +361,159 @@
                     }
                 }
             }
+        },
+        "/api/penerimas": {
+            "get": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Ambil semua data penerima",
+                "operationId": "f0cda67bae09ed34db42440b474e8c43",
+                "responses": {
+                    "200": {
+                        "description": "Data penerima berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Buat penerima baru",
+                "operationId": "e6c756465860b9d30a6d7182222c1dd3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "alamat",
+                                    "nomor_telepon"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "nomor_telepon": {
+                                        "type": "string",
+                                        "maxLength": 15
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Penerima berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/penerimas/{id}": {
+            "get": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Ambil detail penerima",
+                "operationId": "5054da6c3af46a8685f62cf53db4b435",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Penerima ditemukan"
+                    },
+                    "404": {
+                        "description": "Penerima tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Update data penerima",
+                "operationId": "7a6667025f8cd147ea4be7ec7896a155",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "nomor_telepon": {
+                                        "type": "string",
+                                        "maxLength": 15
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Penerima berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Penerima tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Hapus penerima",
+                "operationId": "89e17ad88c30c949d5b5ca0fe2535abb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Penerima berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Penerima tidak ditemukan"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -371,6 +524,10 @@
         {
             "name": "Paket",
             "description": "Paket"
+        },
+        {
+            "name": "Penerima",
+            "description": "Penerima"
         }
     ]
 }

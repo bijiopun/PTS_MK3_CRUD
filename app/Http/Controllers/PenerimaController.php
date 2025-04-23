@@ -7,6 +7,14 @@ use App\Models\Penerima;
 
 class PenerimaController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/penerimas",
+     *     summary="Ambil semua data penerima",
+     *     tags={"Penerima"},
+     *     @OA\Response(response=200, description="Data penerima berhasil diambil")
+     * )
+     */
     public function index()
     {
         $penerimas = Penerima::all();
@@ -18,6 +26,23 @@ class PenerimaController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/penerimas",
+     *     summary="Buat penerima baru",
+     *     tags={"Penerima"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama", "alamat", "nomor_telepon"},
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Penerima berhasil dibuat")
+     * )
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -35,6 +60,21 @@ class PenerimaController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/penerimas/{id}",
+     *     summary="Ambil detail penerima",
+     *     tags={"Penerima"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Penerima ditemukan"),
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     * )
+     */
     public function show($id)
     {
         $penerima = Penerima::find($id);
@@ -54,6 +94,28 @@ class PenerimaController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/penerimas/{id}",
+     *     summary="Update data penerima",
+     *     tags={"Penerima"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Penerima berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     * )
+     */
     public function update(Request $request, $id)
     {
         $penerima = Penerima::find($id);
@@ -81,6 +143,21 @@ class PenerimaController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/penerimas/{id}",
+     *     summary="Hapus penerima",
+     *     tags={"Penerima"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Penerima berhasil dihapus"),
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     * )
+     */
     public function destroy($id)
     {
         $penerima = Penerima::find($id);
