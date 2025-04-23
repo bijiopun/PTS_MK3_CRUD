@@ -514,6 +514,159 @@
                     }
                 }
             }
+        },
+        "/api/pengirims": {
+            "get": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Ambil semua data pengirim",
+                "operationId": "ea54a0d95cfff1aac0b6d4475c2e6688",
+                "responses": {
+                    "200": {
+                        "description": "Data pengirim berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Buat pengirim baru",
+                "operationId": "b74bc851bc13936673935eae23b8cfaf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "alamat",
+                                    "nomor_telepon"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "nomor_telepon": {
+                                        "type": "string",
+                                        "maxLength": 15
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pengirim berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/pengirims/{id}": {
+            "get": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Ambil detail pengirim",
+                "operationId": "ca67deb5be8ea169cb4a5cfa86a1e4d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pengirim ditemukan"
+                    },
+                    "404": {
+                        "description": "Pengirim tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Update data pengirim",
+                "operationId": "c1ec967dcb7b54e02b73bcd04d6f89fa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "nomor_telepon": {
+                                        "type": "string",
+                                        "maxLength": 15
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pengirim berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Pengirim tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Hapus pengirim",
+                "operationId": "b2ace8422b931065d2db35666835067f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pengirim berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Pengirim tidak ditemukan"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -528,6 +681,10 @@
         {
             "name": "Penerima",
             "description": "Penerima"
+        },
+        {
+            "name": "Pengirim",
+            "description": "Pengirim"
         }
     ]
 }

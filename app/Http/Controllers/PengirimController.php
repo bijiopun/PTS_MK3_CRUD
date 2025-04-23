@@ -7,6 +7,14 @@ use App\Models\Pengirim;
 
 class PengirimController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/pengirims",
+     *     summary="Ambil semua data pengirim",
+     *     tags={"Pengirim"},
+     *     @OA\Response(response=200, description="Data pengirim berhasil diambil")
+     * )
+     */
     public function index()
     {
         $pengirims = Pengirim::all();
@@ -18,6 +26,23 @@ class PengirimController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/pengirims",
+     *     summary="Buat pengirim baru",
+     *     tags={"Pengirim"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama", "alamat", "nomor_telepon"},
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Pengirim berhasil dibuat")
+     * )
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -35,6 +60,21 @@ class PengirimController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/pengirims/{id}",
+     *     summary="Ambil detail pengirim",
+     *     tags={"Pengirim"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Pengirim ditemukan"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     * )
+     */
     public function show($id)
     {
         $pengirim = Pengirim::find($id);
@@ -54,6 +94,28 @@ class PengirimController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/pengirims/{id}",
+     *     summary="Update data pengirim",
+     *     tags={"Pengirim"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Pengirim berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     * )
+     */
     public function update(Request $request, $id)
     {
         $pengirim = Pengirim::find($id);
@@ -81,6 +143,21 @@ class PengirimController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/pengirims/{id}",
+     *     summary="Hapus pengirim",
+     *     tags={"Pengirim"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Pengirim berhasil dihapus"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     * )
+     */
     public function destroy($id)
     {
         $pengirim = Pengirim::find($id);
