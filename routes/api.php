@@ -14,3 +14,4 @@ Route::apiResource('laporan_pengiriman', LaporanPengirimanController::class);
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+

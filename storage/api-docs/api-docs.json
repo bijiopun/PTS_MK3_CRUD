@@ -1,0 +1,188 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "Documentation for the Bookstore API",
+        "contact": {
+            "email": "admin@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/laporans": {
+            "get": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Ambil semua laporan pengiriman",
+                "operationId": "b5c47725fa95f25f1b449422c9afb5e6",
+                "responses": {
+                    "200": {
+                        "description": "Data laporan berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Buat laporan pengiriman baru",
+                "operationId": "48d0a2bde5552917ec3417e13a689a36",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "wilayah",
+                                    "jumlah_paket",
+                                    "status_pengiriman"
+                                ],
+                                "properties": {
+                                    "wilayah": {
+                                        "type": "string"
+                                    },
+                                    "jumlah_paket": {
+                                        "type": "integer"
+                                    },
+                                    "status_pengiriman": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "dalam perjalanan",
+                                            "selesai"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Laporan berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/laporans/{id}": {
+            "get": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Ambil detail laporan pengiriman",
+                "operationId": "fa2945f9932d49dfbc65f7e621ba9359",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail laporan ditemukan"
+                    },
+                    "404": {
+                        "description": "Laporan tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Update laporan pengiriman",
+                "operationId": "ea134502d6a92db16768313d8d9e6f5b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "wilayah": {
+                                        "type": "string"
+                                    },
+                                    "jumlah_paket": {
+                                        "type": "integer"
+                                    },
+                                    "status_pengiriman": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "dalam perjalanan",
+                                            "selesai"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Laporan berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Laporan tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Hapus laporan pengiriman",
+                "operationId": "8e9efdb8f550955d597d13da0bcb806e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Laporan berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Laporan tidak ditemukan"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "LaporanPengiriman",
+            "description": "LaporanPengiriman"
+        }
+    ]
+}

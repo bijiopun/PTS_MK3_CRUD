@@ -7,6 +7,17 @@ use App\Models\LaporanPengiriman;
 
 class LaporanPengirimanController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/laporans",
+     *     summary="Ambil semua laporan pengiriman",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data laporan berhasil diambil"
+     *     )
+     * )
+     */
     public function index()
     {
         $laporans = LaporanPengiriman::all();
@@ -18,6 +29,23 @@ class LaporanPengirimanController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/laporans",
+     *     summary="Buat laporan pengiriman baru",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"wilayah", "jumlah_paket", "status_pengiriman"},
+     *             @OA\Property(property="wilayah", type="string"),
+     *             @OA\Property(property="jumlah_paket", type="integer"),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"})
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Laporan berhasil dibuat")
+     * )
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -35,6 +63,21 @@ class LaporanPengirimanController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/laporans/{id}",
+     *     summary="Ambil detail laporan pengiriman",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Detail laporan ditemukan"),
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     * )
+     */
     public function show($id)
     {
         $laporan = LaporanPengiriman::find($id);
@@ -54,6 +97,28 @@ class LaporanPengirimanController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/laporans/{id}",
+     *     summary="Update laporan pengiriman",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="wilayah", type="string"),
+     *             @OA\Property(property="jumlah_paket", type="integer"),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"})
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Laporan berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     * )
+     */
     public function update(Request $request, $id)
     {
         $laporan = LaporanPengiriman::find($id);
@@ -81,6 +146,21 @@ class LaporanPengirimanController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/laporans/{id}",
+     *     summary="Hapus laporan pengiriman",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Laporan berhasil dihapus"),
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     * )
+     */
     public function destroy($id)
     {
         $laporan = LaporanPengiriman::find($id);
