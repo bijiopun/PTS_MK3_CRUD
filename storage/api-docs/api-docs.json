@@ -177,12 +177,200 @@
                     }
                 }
             }
+        },
+        "/api/pakets": {
+            "get": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Ambil semua data paket",
+                "operationId": "a9384eeed743b5c6291b725cd24e061a",
+                "responses": {
+                    "200": {
+                        "description": "Data paket berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Buat paket baru",
+                "operationId": "ebc2c7cb9a55be96c01761e343bd95da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_pengirim",
+                                    "id_penerima",
+                                    "id_laporan",
+                                    "berat",
+                                    "status_pengiriman",
+                                    "jenis"
+                                ],
+                                "properties": {
+                                    "id_pengirim": {
+                                        "type": "integer"
+                                    },
+                                    "id_penerima": {
+                                        "type": "integer"
+                                    },
+                                    "id_laporan": {
+                                        "type": "integer"
+                                    },
+                                    "berat": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "status_pengiriman": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "proses",
+                                            "dikirim",
+                                            "diterima"
+                                        ]
+                                    },
+                                    "jenis": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Paket berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/pakets/{id}": {
+            "get": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Ambil detail paket",
+                "operationId": "9ee06ab35405b885bd239b3925120233",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail paket ditemukan"
+                    },
+                    "404": {
+                        "description": "Paket tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Update data paket",
+                "operationId": "c4deeed145699bb1e956e829ff08ffa2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_pengirim": {
+                                        "type": "integer"
+                                    },
+                                    "id_penerima": {
+                                        "type": "integer"
+                                    },
+                                    "id_laporan": {
+                                        "type": "integer"
+                                    },
+                                    "berat": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "status_pengiriman": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "proses",
+                                            "dikirim",
+                                            "diterima"
+                                        ]
+                                    },
+                                    "jenis": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Paket berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Paket tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Hapus paket",
+                "operationId": "8804dc242e5e2fa43d64ec6e16fbe9ec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paket berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Paket tidak ditemukan"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "LaporanPengiriman",
             "description": "LaporanPengiriman"
+        },
+        {
+            "name": "Paket",
+            "description": "Paket"
         }
     ]
 }
