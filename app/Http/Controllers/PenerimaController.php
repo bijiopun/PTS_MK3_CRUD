@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penerima;
+use Illuminate\Support\Facades\Validator;
 
 class PenerimaController extends Controller
 {
@@ -176,6 +177,80 @@ class PenerimaController extends Controller
             'status' => 200,
             'message' => 'Penerima deleted successfully.',
             'data' => null
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/penerimas/filter/nama",
+     *     summary="Filter penerima berdasarkan nama (partial match)",
+     *     tags={"Penerima"},
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByNama(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $penerimas = Penerima::where('nama', 'like', '%' . $request->nama . '%')->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered penerima by nama retrieved successfully.',
+            'data' => $penerimas
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/penerimas/filter/nomor_telepon",
+     *     summary="Filter penerima berdasarkan nomor telepon (exact match)",
+     *     tags={"Penerima"},
+     *     @OA\Parameter(
+     *         name="nomor_telepon",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", maxLength=15)
+     *     ),
+     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByNomorTelepon(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomor_telepon' => 'required|string|max:15'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $penerimas = Penerima::where('nomor_telepon', $request->nomor_telepon)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered penerima by nomor telepon retrieved successfully.',
+            'data' => $penerimas
         ], 200);
     }
 }

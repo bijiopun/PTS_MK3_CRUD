@@ -178,6 +178,59 @@
                 }
             }
         },
+        "/api/laporans/filter/status": {
+            "get": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Filter laporan berdasarkan status pengiriman",
+                "operationId": "b036c6449cfe1e4045d18f8e2a7dbb88",
+                "parameters": [
+                    {
+                        "name": "status_pengiriman",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "dalam perjalanan",
+                                "selesai"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data laporan yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
+        "/api/laporans/filter/wilayah": {
+            "get": {
+                "tags": [
+                    "LaporanPengiriman"
+                ],
+                "summary": "Filter laporan berdasarkan wilayah",
+                "operationId": "d8e9e4234f8f5459e2b9ae656e41d516",
+                "parameters": [
+                    {
+                        "name": "wilayah",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data laporan yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
         "/api/pakets": {
             "get": {
                 "tags": [
@@ -362,6 +415,60 @@
                 }
             }
         },
+        "/api/pakets/filter/status": {
+            "get": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Filter paket berdasarkan status",
+                "operationId": "f3b08cc027cda0536961b1d15974bfd1",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "proses",
+                                "dikirim",
+                                "diterima"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data paket yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
+        "/api/pakets/filter/jenis": {
+            "get": {
+                "tags": [
+                    "Paket"
+                ],
+                "summary": "Filter paket berdasarkan jenis",
+                "operationId": "c398e83f24d78e1cbe16009d9d0d8044",
+                "parameters": [
+                    {
+                        "name": "jenis",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data paket yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
         "/api/penerimas": {
             "get": {
                 "tags": [
@@ -515,6 +622,55 @@
                 }
             }
         },
+        "/api/penerimas/filter/nama": {
+            "get": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Filter penerima berdasarkan nama (partial match)",
+                "operationId": "8bb488ab9de6805015f4e6f2aee23a3b",
+                "parameters": [
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data penerima yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
+        "/api/penerimas/filter/nomor_telepon": {
+            "get": {
+                "tags": [
+                    "Penerima"
+                ],
+                "summary": "Filter penerima berdasarkan nomor telepon (exact match)",
+                "operationId": "a8266953ba71cb9598637a7cbc7a85c8",
+                "parameters": [
+                    {
+                        "name": "nomor_telepon",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data penerima yang difilter berhasil diambil"
+                    }
+                }
+            }
+        },
         "/api/pengirims": {
             "get": {
                 "tags": [
@@ -664,6 +820,40 @@
                     },
                     "404": {
                         "description": "Pengirim tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/pengirims/filter": {
+            "get": {
+                "tags": [
+                    "Pengirim"
+                ],
+                "summary": "Filter data pengirim berdasarkan nama atau nomor telepon",
+                "operationId": "78df7bd477db8b38db1696a42fcee846",
+                "parameters": [
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Filter berdasarkan nama",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nomor_telepon",
+                        "in": "query",
+                        "description": "Filter berdasarkan nomor telepon",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Daftar pengirim hasil filter"
                     }
                 }
             }

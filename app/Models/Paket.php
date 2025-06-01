@@ -25,4 +25,6 @@ class Paket extends Model
     {
         return $this->belongsTo(LaporanPengiriman::class, 'id_laporan');
     }
+
+    
 }

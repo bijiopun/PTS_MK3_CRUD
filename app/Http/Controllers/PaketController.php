@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Paket;
+use Illuminate\Support\Facades\Validator;
 
 class PaketController extends Controller
 {
@@ -188,6 +189,80 @@ class PaketController extends Controller
             'status' => 200,
             'message' => 'Paket deleted successfully.',
             'data' => null
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/pakets/filter/status",
+     *     summary="Filter paket berdasarkan status",
+     *     tags={"Paket"},
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"pending", "proses", "dikirim", "diterima"})
+     *     ),
+     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:pending,proses,dikirim,diterima'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $pakets = Paket::where('status_pengiriman', $request->status)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered paket retrieved successfully.',
+            'data' => $pakets
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/pakets/filter/jenis",
+     *     summary="Filter paket berdasarkan jenis",
+     *     tags={"Paket"},
+     *     @OA\Parameter(
+     *         name="jenis",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByJenis(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'jenis' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $pakets = Paket::where('jenis', $request->jenis)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered paket by jenis retrieved successfully.',
+            'data' => $pakets
         ], 200);
     }
 }

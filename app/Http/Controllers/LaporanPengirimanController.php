@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LaporanPengiriman;
+use Illuminate\Support\Facades\Validator;
 
 class LaporanPengirimanController extends Controller
 {
@@ -179,6 +180,81 @@ class LaporanPengirimanController extends Controller
             'status' => 200,
             'message' => 'Laporan pengiriman deleted successfully.',
             'data' => null
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/laporans/filter/status",
+     *     summary="Filter laporan berdasarkan status pengiriman",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Parameter(
+     *         name="status_pengiriman",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"pending", "dalam perjalanan", "selesai"})
+     *     ),
+     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'status_pengiriman' => 'required|in:pending,dalam perjalanan,selesai'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $laporans = LaporanPengiriman::where('status_pengiriman', $request->status_pengiriman)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered laporan retrieved successfully.',
+            'data' => $laporans
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/laporans/filter/wilayah",
+     *     summary="Filter laporan berdasarkan wilayah",
+     *     tags={"LaporanPengiriman"},
+     *     @OA\Parameter(
+     *         name="wilayah",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil")
+     * )
+     */
+    public function filterByWilayah(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'wilayah' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validasi gagal.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $laporans = LaporanPengiriman::where('wilayah', $request->wilayah)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered laporan by wilayah retrieved successfully.',
+            'data' => $laporans
         ], 200);
     }
 }
