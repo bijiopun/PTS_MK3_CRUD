@@ -3,110 +3,102 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pengiriman;
+use App\Models\Pengirim;
 
-class PengirimanController extends Controller
+class PengirimController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/pengirims",  // sesuaikan ke /api/pengirimans kalau endpointnya pengiriman
-     *     summary="Ambil semua data pengiriman",
-     *     tags={"Pengiriman"},
-     *     @OA\Response(response=200, description="Data pengiriman berhasil diambil")
+     *     path="/api/pengirims",
+     *     summary="Ambil semua data pengirim",
+     *     tags={"Pengirim"},
+     *     @OA\Response(response=200, description="Data pengirim berhasil diambil")
      * )
      */
     public function index()
     {
-        $pengirimans = Pengiriman::all();
+        $pengirims = Pengirim::all();
 
         return response()->json([
             'status' => 200,
-            'message' => 'Pengiriman retrieved successfully.',
-            'data' => $pengirimans
+            'message' => 'Pengirim retrieved successfully.',
+            'data' => $pengirims
         ], 200);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/pengirimans",
-     *     summary="Buat pengiriman baru",
-     *     tags={"Pengiriman"},
+     *     path="/api/pengirims",
+     *     summary="Buat pengirim baru",
+     *     tags={"Pengirim"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"pengirim_id", "penerima_id", "paket_id", "status", "tanggal_kirim"},
-     *             @OA\Property(property="pengirim_id", type="integer"),
-     *             @OA\Property(property="penerima_id", type="integer"),
-     *             @OA\Property(property="paket_id", type="integer"),
-     *             @OA\Property(property="status", type="string", maxLength=50),
-     *             @OA\Property(property="tanggal_kirim", type="string", format="date"),
-     *             @OA\Property(property="tanggal_terima", type="string", format="date", nullable=true),
-     *             @OA\Property(property="keterangan", type="string", nullable=true)
+     *             required={"nama", "alamat", "nomor_telepon"},
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Pengiriman berhasil dibuat")
+     *     @OA\Response(response=200, description="Pengirim berhasil dibuat")
      * )
      */
     public function store(Request $request)
     {
         $request->validate([
-            'pengirim_id' => 'required|integer|exists:pengirims,id',
-            'penerima_id' => 'required|integer|exists:penerimas,id',
-            'paket_id' => 'required|integer|exists:pakets,id',
-            'status' => 'required|string|max:50',
-            'tanggal_kirim' => 'required|date',
-            'tanggal_terima' => 'nullable|date|after_or_equal:tanggal_kirim',
-            'keterangan' => 'nullable|string'
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'nomor_telepon' => 'required|string|max:15'
         ]);
 
-        $pengiriman = Pengiriman::create($request->all());
+        $pengirim = Pengirim::create($request->all());
 
         return response()->json([
             'status' => 200,
-            'message' => 'Pengiriman created successfully.',
-            'data' => $pengiriman
+            'message' => 'Pengirim created successfully.',
+            'data' => $pengirim
         ], 200);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/pengirimans/{id}",
-     *     summary="Ambil detail pengiriman",
-     *     tags={"Pengiriman"},
+     *     path="/api/pengirims/{id}",
+     *     summary="Ambil detail pengirim",
+     *     tags={"Pengirim"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Pengiriman ditemukan"),
-     *     @OA\Response(response=404, description="Pengiriman tidak ditemukan")
+     *     @OA\Response(response=200, description="Pengirim ditemukan"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
      * )
      */
     public function show($id)
     {
-        $pengiriman = Pengiriman::find($id);
+        $pengirim = Pengirim::find($id);
 
-        if (!$pengiriman) {
+        if (!$pengirim) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Pengiriman not found.',
+                'message' => 'Pengirim not found.',
                 'data' => null
             ], 404);
         }
 
         return response()->json([
             'status' => 200,
-            'message' => 'Pengiriman retrieved successfully.',
-            'data' => $pengiriman
+            'message' => 'Pengirim retrieved successfully.',
+            'data' => $pengirim
         ], 200);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/pengirimans/{id}",
-     *     summary="Update data pengiriman",
-     *     tags={"Pengiriman"},
+     *     path="/api/pengirims/{id}",
+     *     summary="Update data pengirim",
+     *     tags={"Pengirim"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -115,83 +107,119 @@ class PengirimanController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
-     *             @OA\Property(property="pengirim_id", type="integer"),
-     *             @OA\Property(property="penerima_id", type="integer"),
-     *             @OA\Property(property="paket_id", type="integer"),
-     *             @OA\Property(property="status", type="string", maxLength=50),
-     *             @OA\Property(property="tanggal_kirim", type="string", format="date"),
-     *             @OA\Property(property="tanggal_terima", type="string", format="date", nullable=true),
-     *             @OA\Property(property="keterangan", type="string", nullable=true)
+     *             @OA\Property(property="nama", type="string", maxLength=255),
+     *             @OA\Property(property="alamat", type="string"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Pengiriman berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Pengiriman tidak ditemukan")
+     *     @OA\Response(response=200, description="Pengirim berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
      * )
      */
     public function update(Request $request, $id)
     {
-        $pengiriman = Pengiriman::find($id);
+        $pengirim = Pengirim::find($id);
 
-        if (!$pengiriman) {
+        if (!$pengirim) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Pengiriman not found.',
+                'message' => 'Pengirim not found.',
                 'data' => null
             ], 404);
         }
 
         $request->validate([
-            'pengirim_id' => 'sometimes|integer|exists:pengirims,id',
-            'penerima_id' => 'sometimes|integer|exists:penerimas,id',
-            'paket_id' => 'sometimes|integer|exists:pakets,id',
-            'status' => 'sometimes|string|max:50',
-            'tanggal_kirim' => 'sometimes|date',
-            'tanggal_terima' => 'nullable|date|after_or_equal:tanggal_kirim',
-            'keterangan' => 'nullable|string'
+            'nama' => 'sometimes|string|max:255',
+            'alamat' => 'sometimes|string',
+            'nomor_telepon' => 'sometimes|string|max:15'
         ]);
 
-        $pengiriman->update($request->all());
+        $pengirim->update($request->all());
 
         return response()->json([
             'status' => 200,
-            'message' => 'Pengiriman updated successfully.',
-            'data' => $pengiriman
+            'message' => 'Pengirim updated successfully.',
+            'data' => $pengirim
         ], 200);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/pengirimans/{id}",
-     *     summary="Hapus pengiriman",
-     *     tags={"Pengiriman"},
+     *     path="/api/pengirims/{id}",
+     *     summary="Hapus pengirim",
+     *     tags={"Pengirim"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Pengiriman berhasil dihapus"),
-     *     @OA\Response(response=404, description="Pengiriman tidak ditemukan")
+     *     @OA\Response(response=200, description="Pengirim berhasil dihapus"),
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
      * )
      */
     public function destroy($id)
     {
-        $pengiriman = Pengiriman::find($id);
+        $pengirim = Pengirim::find($id);
 
-        if (!$pengiriman) {
+        if (!$pengirim) {
             return response()->json([
                 'status' => 404,
-                'message' => 'Pengiriman not found.',
+                'message' => 'Pengirim not found.',
                 'data' => null
             ], 404);
         }
 
-        $pengiriman->delete();
+        $pengirim->delete();
 
         return response()->json([
             'status' => 200,
-            'message' => 'Pengiriman deleted successfully.',
+            'message' => 'Pengirim deleted successfully.',
             'data' => null
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/pengirims/filter",
+     *     summary="Filter data pengirim berdasarkan nama atau nomor telepon",
+     *     tags={"Pengirim"},
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
+     *         description="Filter berdasarkan nama",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="nomor_telepon",
+     *         in="query",
+     *         description="Filter berdasarkan nomor telepon",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Daftar pengirim hasil filter")
+     * )
+     */
+    public function filter(Request $request)
+    {
+        $query = Pengirim::query();
+
+        if ($request->has('nama')) {
+            $query->where('nama', 'like', '%' . $request->nama . '%');
+        }
+
+        if ($request->has('nomor_telepon')) {
+            $query->where('nomor_telepon', 'like', '%' . $request->nomor_telepon . '%');
+        }
+
+        $pengirims = $query->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Filtered pengirims retrieved successfully.',
+            'data' => $pengirims
         ], 200);
     }
 }
