@@ -13,10 +13,24 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans",
      *     summary="Ambil semua laporan pengiriman",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Data laporan berhasil diambil"
-     *     )
+     *         description="Data laporan berhasil diambil",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Laporan pengiriman retrieved successfully."),
+     *             @OA\Property(property="data", type="array", @OA\Items(
+     *                 @OA\Property(property="id_laporan", type="integer", example=1),
+     *                 @OA\Property(property="wilayah", type="string", example="Jakarta"),
+     *                 @OA\Property(property="jumlah_paket", type="integer", example=10),
+     *                 @OA\Property(property="status_pengiriman", type="string", example="pending"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function index()
@@ -35,16 +49,34 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans",
      *     summary="Buat laporan pengiriman baru",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"wilayah", "jumlah_paket", "status_pengiriman"},
-     *             @OA\Property(property="wilayah", type="string"),
-     *             @OA\Property(property="jumlah_paket", type="integer"),
-     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"})
+     *             @OA\Property(property="wilayah", type="string", example="Jakarta Selatan"),
+     *             @OA\Property(property="jumlah_paket", type="integer", example=5),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"}, example="pending")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Laporan berhasil dibuat")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Laporan berhasil dibuat",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Laporan pengiriman created successfully."),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id_laporan", type="integer", example=1),
+     *                 @OA\Property(property="wilayah", type="string", example="Jakarta Selatan"),
+     *                 @OA\Property(property="jumlah_paket", type="integer", example=5),
+     *                 @OA\Property(property="status_pengiriman", type="string", example="pending"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function store(Request $request)
@@ -69,14 +101,31 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans/{id}",
      *     summary="Ambil detail laporan pengiriman",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Detail laporan ditemukan"),
-     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detail laporan ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Laporan pengiriman retrieved successfully."),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id_laporan", type="integer", example=1),
+     *                 @OA\Property(property="wilayah", type="string", example="Jakarta"),
+     *                 @OA\Property(property="jumlah_paket", type="integer", example=10),
+     *                 @OA\Property(property="status_pengiriman", type="string", example="pending"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function show($id)
@@ -103,6 +152,7 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans/{id}",
      *     summary="Update laporan pengiriman",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -111,13 +161,15 @@ class LaporanPengirimanController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
-     *             @OA\Property(property="wilayah", type="string"),
-     *             @OA\Property(property="jumlah_paket", type="integer"),
-     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"})
+     *             @OA\Property(property="wilayah", type="string", example="Bandung"),
+     *             @OA\Property(property="jumlah_paket", type="integer", example=15),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "dalam perjalanan", "selesai"}, example="dalam perjalanan")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Laporan berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function update(Request $request, $id)
@@ -152,6 +204,7 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans/{id}",
      *     summary="Hapus laporan pengiriman",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -159,7 +212,8 @@ class LaporanPengirimanController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Laporan berhasil dihapus"),
-     *     @OA\Response(response=404, description="Laporan tidak ditemukan")
+     *     @OA\Response(response=404, description="Laporan tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function destroy($id)
@@ -189,13 +243,16 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans/filter/status",
      *     summary="Filter laporan berdasarkan status pengiriman",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="status_pengiriman",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string", enum={"pending", "dalam perjalanan", "selesai"})
      *     ),
-     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByStatus(Request $request)
@@ -226,13 +283,16 @@ class LaporanPengirimanController extends Controller
      *     path="/api/laporans/filter/wilayah",
      *     summary="Filter laporan berdasarkan wilayah",
      *     tags={"LaporanPengiriman"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="wilayah",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
-     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data laporan yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByWilayah(Request $request)

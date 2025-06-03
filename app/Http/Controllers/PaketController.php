@@ -13,7 +13,27 @@ class PaketController extends Controller
      *     path="/api/pakets",
      *     summary="Ambil semua data paket",
      *     tags={"Paket"},
-     *     @OA\Response(response=200, description="Data paket berhasil diambil")
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data paket berhasil diambil",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Paket retrieved successfully."),
+     *             @OA\Property(property="data", type="array", @OA\Items(
+     *                 @OA\Property(property="id_paket", type="integer", example=1),
+     *                 @OA\Property(property="id_pengirim", type="integer", example=1),
+     *                 @OA\Property(property="id_penerima", type="integer", example=1),
+     *                 @OA\Property(property="id_laporan", type="integer", example=1),
+     *                 @OA\Property(property="berat", type="number", format="float", example=2.5),
+     *                 @OA\Property(property="status_pengiriman", type="string", example="pending"),
+     *                 @OA\Property(property="jenis", type="string", example="Dokumen"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function index()
@@ -32,19 +52,22 @@ class PaketController extends Controller
      *     path="/api/pakets",
      *     summary="Buat paket baru",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"id_pengirim", "id_penerima", "id_laporan", "berat", "status_pengiriman", "jenis"},
-     *             @OA\Property(property="id_pengirim", type="integer"),
-     *             @OA\Property(property="id_penerima", type="integer"),
-     *             @OA\Property(property="id_laporan", type="integer"),
-     *             @OA\Property(property="berat", type="number", format="float"),
-     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "proses", "dikirim", "diterima"}),
-     *             @OA\Property(property="jenis", type="string")
+     *             @OA\Property(property="id_pengirim", type="integer", example=1),
+     *             @OA\Property(property="id_penerima", type="integer", example=1),
+     *             @OA\Property(property="id_laporan", type="integer", example=1),
+     *             @OA\Property(property="berat", type="number", format="float", example=2.5),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "proses", "dikirim", "diterima"}, example="pending"),
+     *             @OA\Property(property="jenis", type="string", example="Dokumen")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Paket berhasil dibuat")
+     *     @OA\Response(response=200, description="Paket berhasil dibuat"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function store(Request $request)
@@ -72,6 +95,7 @@ class PaketController extends Controller
      *     path="/api/pakets/{id}",
      *     summary="Ambil detail paket",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -79,7 +103,8 @@ class PaketController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Detail paket ditemukan"),
-     *     @OA\Response(response=404, description="Paket tidak ditemukan")
+     *     @OA\Response(response=404, description="Paket tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function show($id)
@@ -106,6 +131,7 @@ class PaketController extends Controller
      *     path="/api/pakets/{id}",
      *     summary="Update data paket",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -114,16 +140,18 @@ class PaketController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
-     *             @OA\Property(property="id_pengirim", type="integer"),
-     *             @OA\Property(property="id_penerima", type="integer"),
-     *             @OA\Property(property="id_laporan", type="integer"),
-     *             @OA\Property(property="berat", type="number", format="float"),
-     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "proses", "dikirim", "diterima"}),
-     *             @OA\Property(property="jenis", type="string")
+     *             @OA\Property(property="id_pengirim", type="integer", example=1),
+     *             @OA\Property(property="id_penerima", type="integer", example=1),
+     *             @OA\Property(property="id_laporan", type="integer", example=1),
+     *             @OA\Property(property="berat", type="number", format="float", example=3.0),
+     *             @OA\Property(property="status_pengiriman", type="string", enum={"pending", "proses", "dikirim", "diterima"}, example="proses"),
+     *             @OA\Property(property="jenis", type="string", example="Elektronik")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Paket berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Paket tidak ditemukan")
+     *     @OA\Response(response=404, description="Paket tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function update(Request $request, $id)
@@ -161,6 +189,7 @@ class PaketController extends Controller
      *     path="/api/pakets/{id}",
      *     summary="Hapus paket",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -168,7 +197,8 @@ class PaketController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Paket berhasil dihapus"),
-     *     @OA\Response(response=404, description="Paket tidak ditemukan")
+     *     @OA\Response(response=404, description="Paket tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function destroy($id)
@@ -194,16 +224,19 @@ class PaketController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/pakets/filter/status",
+     *     path="/api/paket/filter/status",
      *     summary="Filter paket berdasarkan status",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="status",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string", enum={"pending", "proses", "dikirim", "diterima"})
      *     ),
-     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByStatus(Request $request)
@@ -231,16 +264,19 @@ class PaketController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/pakets/filter/jenis",
+     *     path="/api/paket/filter/jenis",
      *     summary="Filter paket berdasarkan jenis",
      *     tags={"Paket"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="jenis",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
-     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data paket yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByJenis(Request $request)

@@ -10,8 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 /**
  * @OA\Info(
  *     version="1.0.0",
- *     title="API Documentation",
- *     description="Documentation for the Bookstore API",
+ *     title="Aplikasi Gacor API Documentation",
+ *     description="Documentation for the Aplikasi Gacor Package Delivery Management System",
  *     @OA\Contact(
  *         email="admin@example.com"
  *     ),
@@ -21,9 +21,17 @@ use Illuminate\Routing\Controller as BaseController;
  *     )
  * )
  *
+ * @OA\SecurityScheme(
+ *     securityScheme="sanctum",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     description="Enter token in format: Bearer {token}"
+ * )
+ *
  * @OA\Server(
- *     url=L5_SWAGGER_CONST_HOST,
- *     description="API Server"
+ *     url="http://localhost:8000",
+ *     description="Local Development Server"
  * )
  */
 class Controller extends BaseController

@@ -12,7 +12,9 @@ class PengirimController extends Controller
      *     path="/api/pengirims",
      *     summary="Ambil semua data pengirim",
      *     tags={"Pengirim"},
-     *     @OA\Response(response=200, description="Data pengirim berhasil diambil")
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(response=200, description="Data pengirim berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function index()
@@ -31,16 +33,19 @@ class PengirimController extends Controller
      *     path="/api/pengirims",
      *     summary="Buat pengirim baru",
      *     tags={"Pengirim"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"nama", "alamat", "nomor_telepon"},
-     *             @OA\Property(property="nama", type="string", maxLength=255),
-     *             @OA\Property(property="alamat", type="string"),
-     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *             @OA\Property(property="nama", type="string", maxLength=255, example="PT Express"),
+     *             @OA\Property(property="alamat", type="string", example="Jl. Gatot Subroto No. 789, Jakarta"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15, example="021-555-0123")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Pengirim berhasil dibuat")
+     *     @OA\Response(response=200, description="Pengirim berhasil dibuat"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function store(Request $request)
@@ -65,6 +70,7 @@ class PengirimController extends Controller
      *     path="/api/pengirims/{id}",
      *     summary="Ambil detail pengirim",
      *     tags={"Pengirim"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -72,7 +78,8 @@ class PengirimController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Pengirim ditemukan"),
-     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function show($id)
@@ -99,6 +106,7 @@ class PengirimController extends Controller
      *     path="/api/pengirims/{id}",
      *     summary="Update data pengirim",
      *     tags={"Pengirim"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -107,13 +115,15 @@ class PengirimController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
-     *             @OA\Property(property="nama", type="string", maxLength=255),
-     *             @OA\Property(property="alamat", type="string"),
-     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *             @OA\Property(property="nama", type="string", maxLength=255, example="PT Delivery Plus"),
+     *             @OA\Property(property="alamat", type="string", example="Jl. HR Rasuna Said No. 456, Jakarta"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15, example="021-555-0124")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Pengirim berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function update(Request $request, $id)
@@ -148,6 +158,7 @@ class PengirimController extends Controller
      *     path="/api/pengirims/{id}",
      *     summary="Hapus pengirim",
      *     tags={"Pengirim"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -155,7 +166,8 @@ class PengirimController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Pengirim berhasil dihapus"),
-     *     @OA\Response(response=404, description="Pengirim tidak ditemukan")
+     *     @OA\Response(response=404, description="Pengirim tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function destroy($id)
@@ -185,6 +197,7 @@ class PengirimController extends Controller
      *     path="/api/pengirims/filter",
      *     summary="Filter data pengirim berdasarkan nama atau nomor telepon",
      *     tags={"Pengirim"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="nama",
      *         in="query",
@@ -199,7 +212,8 @@ class PengirimController extends Controller
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
-     *     @OA\Response(response=200, description="Daftar pengirim hasil filter")
+     *     @OA\Response(response=200, description="Daftar pengirim hasil filter"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function filter(Request $request)

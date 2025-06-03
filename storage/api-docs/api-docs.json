@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Documentation",
-        "description": "Documentation for the Bookstore API",
+        "title": "Aplikasi Gacor API Documentation",
+        "description": "Documentation for the Aplikasi Gacor Package Delivery Management System",
         "contact": {
             "email": "admin@example.com"
         },
@@ -14,8 +14,11 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api",
-            "description": "API Server"
+            "url": "http://localhost:8000",
+            "description": "Local Development Server"
+        },
+        {
+            "url": ""
         }
     ],
     "paths": {
@@ -144,9 +147,66 @@
                 "operationId": "b5c47725fa95f25f1b449422c9afb5e6",
                 "responses": {
                     "200": {
-                        "description": "Data laporan berhasil diambil"
+                        "description": "Data laporan berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Laporan pengiriman retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id_laporan": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "wilayah": {
+                                                        "type": "string",
+                                                        "example": "Jakarta"
+                                                    },
+                                                    "jumlah_paket": {
+                                                        "type": "integer",
+                                                        "example": 10
+                                                    },
+                                                    "status_pengiriman": {
+                                                        "type": "string",
+                                                        "example": "pending"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -166,10 +226,12 @@
                                 ],
                                 "properties": {
                                     "wilayah": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Jakarta Selatan"
                                     },
                                     "jumlah_paket": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 5
                                     },
                                     "status_pengiriman": {
                                         "type": "string",
@@ -177,7 +239,8 @@
                                             "pending",
                                             "dalam perjalanan",
                                             "selesai"
-                                        ]
+                                        ],
+                                        "example": "pending"
                                     }
                                 },
                                 "type": "object"
@@ -187,9 +250,66 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Laporan berhasil dibuat"
+                        "description": "Laporan berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Laporan pengiriman created successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id_laporan": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "wilayah": {
+                                                    "type": "string",
+                                                    "example": "Jakarta Selatan"
+                                                },
+                                                "jumlah_paket": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "status_pengiriman": {
+                                                    "type": "string",
+                                                    "example": "pending"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/laporans/{id}": {
@@ -211,12 +331,66 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detail laporan ditemukan"
+                        "description": "Detail laporan ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Laporan pengiriman retrieved successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id_laporan": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "wilayah": {
+                                                    "type": "string",
+                                                    "example": "Jakarta"
+                                                },
+                                                "jumlah_paket": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "status_pengiriman": {
+                                                    "type": "string",
+                                                    "example": "pending"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Laporan tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -240,10 +414,12 @@
                             "schema": {
                                 "properties": {
                                     "wilayah": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Bandung"
                                     },
                                     "jumlah_paket": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 15
                                     },
                                     "status_pengiriman": {
                                         "type": "string",
@@ -251,7 +427,8 @@
                                             "pending",
                                             "dalam perjalanan",
                                             "selesai"
-                                        ]
+                                        ],
+                                        "example": "dalam perjalanan"
                                     }
                                 },
                                 "type": "object"
@@ -265,8 +442,19 @@
                     },
                     "404": {
                         "description": "Laporan tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -290,8 +478,16 @@
                     },
                     "404": {
                         "description": "Laporan tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/laporans/filter/status": {
@@ -319,8 +515,19 @@
                 "responses": {
                     "200": {
                         "description": "Data laporan yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/laporans/filter/wilayah": {
@@ -343,8 +550,19 @@
                 "responses": {
                     "200": {
                         "description": "Data laporan yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/pakets": {
@@ -356,9 +574,79 @@
                 "operationId": "a9384eeed743b5c6291b725cd24e061a",
                 "responses": {
                     "200": {
-                        "description": "Data paket berhasil diambil"
+                        "description": "Data paket berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Paket retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id_paket": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "id_pengirim": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "id_penerima": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "id_laporan": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "berat": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 2.5
+                                                    },
+                                                    "status_pengiriman": {
+                                                        "type": "string",
+                                                        "example": "pending"
+                                                    },
+                                                    "jenis": {
+                                                        "type": "string",
+                                                        "example": "Dokumen"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -381,17 +669,21 @@
                                 ],
                                 "properties": {
                                     "id_pengirim": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "id_penerima": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "id_laporan": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "berat": {
                                         "type": "number",
-                                        "format": "float"
+                                        "format": "float",
+                                        "example": 2.5
                                     },
                                     "status_pengiriman": {
                                         "type": "string",
@@ -400,10 +692,12 @@
                                             "proses",
                                             "dikirim",
                                             "diterima"
-                                        ]
+                                        ],
+                                        "example": "pending"
                                     },
                                     "jenis": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Dokumen"
                                     }
                                 },
                                 "type": "object"
@@ -414,8 +708,19 @@
                 "responses": {
                     "200": {
                         "description": "Paket berhasil dibuat"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/pakets/{id}": {
@@ -441,8 +746,16 @@
                     },
                     "404": {
                         "description": "Paket tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -466,17 +779,21 @@
                             "schema": {
                                 "properties": {
                                     "id_pengirim": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "id_penerima": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "id_laporan": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "berat": {
                                         "type": "number",
-                                        "format": "float"
+                                        "format": "float",
+                                        "example": 3
                                     },
                                     "status_pengiriman": {
                                         "type": "string",
@@ -485,10 +802,12 @@
                                             "proses",
                                             "dikirim",
                                             "diterima"
-                                        ]
+                                        ],
+                                        "example": "proses"
                                     },
                                     "jenis": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Elektronik"
                                     }
                                 },
                                 "type": "object"
@@ -502,8 +821,19 @@
                     },
                     "404": {
                         "description": "Paket tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -527,17 +857,25 @@
                     },
                     "404": {
                         "description": "Paket tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
-        "/api/pakets/filter/status": {
+        "/api/paket/filter/status": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Filter paket berdasarkan status",
-                "operationId": "f3b08cc027cda0536961b1d15974bfd1",
+                "operationId": "ccdbe3bc16d5eda1f93c237af2c113e1",
                 "parameters": [
                     {
                         "name": "status",
@@ -557,17 +895,28 @@
                 "responses": {
                     "200": {
                         "description": "Data paket yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
-        "/api/pakets/filter/jenis": {
+        "/api/paket/filter/jenis": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Filter paket berdasarkan jenis",
-                "operationId": "c398e83f24d78e1cbe16009d9d0d8044",
+                "operationId": "e09996ada1f1365b2c82b60cedf5ff78",
                 "parameters": [
                     {
                         "name": "jenis",
@@ -581,8 +930,19 @@
                 "responses": {
                     "200": {
                         "description": "Data paket yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/penerimas": {
@@ -595,8 +955,16 @@
                 "responses": {
                     "200": {
                         "description": "Data penerima berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -617,14 +985,17 @@
                                 "properties": {
                                     "nama": {
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "John Doe"
                                     },
                                     "alamat": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Jl. Sudirman No. 123, Jakarta"
                                     },
                                     "nomor_telepon": {
                                         "type": "string",
-                                        "maxLength": 15
+                                        "maxLength": 15,
+                                        "example": "081234567890"
                                     }
                                 },
                                 "type": "object"
@@ -635,8 +1006,19 @@
                 "responses": {
                     "200": {
                         "description": "Penerima berhasil dibuat"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/penerimas/{id}": {
@@ -662,8 +1044,16 @@
                     },
                     "404": {
                         "description": "Penerima tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -688,14 +1078,17 @@
                                 "properties": {
                                     "nama": {
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "Jane Doe"
                                     },
                                     "alamat": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Jl. Thamrin No. 456, Jakarta"
                                     },
                                     "nomor_telepon": {
                                         "type": "string",
-                                        "maxLength": 15
+                                        "maxLength": 15,
+                                        "example": "081234567891"
                                     }
                                 },
                                 "type": "object"
@@ -709,8 +1102,19 @@
                     },
                     "404": {
                         "description": "Penerima tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -734,8 +1138,16 @@
                     },
                     "404": {
                         "description": "Penerima tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/penerimas/filter/nama": {
@@ -758,8 +1170,19 @@
                 "responses": {
                     "200": {
                         "description": "Data penerima yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/penerimas/filter/nomor_telepon": {
@@ -783,8 +1206,19 @@
                 "responses": {
                     "200": {
                         "description": "Data penerima yang difilter berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/pengirims": {
@@ -797,8 +1231,16 @@
                 "responses": {
                     "200": {
                         "description": "Data pengirim berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -819,14 +1261,17 @@
                                 "properties": {
                                     "nama": {
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "PT Express"
                                     },
                                     "alamat": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Jl. Gatot Subroto No. 789, Jakarta"
                                     },
                                     "nomor_telepon": {
                                         "type": "string",
-                                        "maxLength": 15
+                                        "maxLength": 15,
+                                        "example": "021-555-0123"
                                     }
                                 },
                                 "type": "object"
@@ -837,8 +1282,19 @@
                 "responses": {
                     "200": {
                         "description": "Pengirim berhasil dibuat"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/pengirims/{id}": {
@@ -864,8 +1320,16 @@
                     },
                     "404": {
                         "description": "Pengirim tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -890,14 +1354,17 @@
                                 "properties": {
                                     "nama": {
                                         "type": "string",
-                                        "maxLength": 255
+                                        "maxLength": 255,
+                                        "example": "PT Delivery Plus"
                                     },
                                     "alamat": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Jl. HR Rasuna Said No. 456, Jakarta"
                                     },
                                     "nomor_telepon": {
                                         "type": "string",
-                                        "maxLength": 15
+                                        "maxLength": 15,
+                                        "example": "021-555-0124"
                                     }
                                 },
                                 "type": "object"
@@ -911,8 +1378,19 @@
                     },
                     "404": {
                         "description": "Pengirim tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -936,8 +1414,16 @@
                     },
                     "404": {
                         "description": "Pengirim tidak ditemukan"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/pengirims/filter": {
@@ -970,8 +1456,26 @@
                 "responses": {
                     "200": {
                         "description": "Daftar pengirim hasil filter"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Enter token in format: Bearer {token}",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },

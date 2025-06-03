@@ -13,7 +13,9 @@ class PenerimaController extends Controller
      *     path="/api/penerimas",
      *     summary="Ambil semua data penerima",
      *     tags={"Penerima"},
-     *     @OA\Response(response=200, description="Data penerima berhasil diambil")
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(response=200, description="Data penerima berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function index()
@@ -32,16 +34,19 @@ class PenerimaController extends Controller
      *     path="/api/penerimas",
      *     summary="Buat penerima baru",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"nama", "alamat", "nomor_telepon"},
-     *             @OA\Property(property="nama", type="string", maxLength=255),
-     *             @OA\Property(property="alamat", type="string"),
-     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *             @OA\Property(property="nama", type="string", maxLength=255, example="John Doe"),
+     *             @OA\Property(property="alamat", type="string", example="Jl. Sudirman No. 123, Jakarta"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15, example="081234567890")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Penerima berhasil dibuat")
+     *     @OA\Response(response=200, description="Penerima berhasil dibuat"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function store(Request $request)
@@ -66,6 +71,7 @@ class PenerimaController extends Controller
      *     path="/api/penerimas/{id}",
      *     summary="Ambil detail penerima",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -73,7 +79,8 @@ class PenerimaController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Penerima ditemukan"),
-     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function show($id)
@@ -100,6 +107,7 @@ class PenerimaController extends Controller
      *     path="/api/penerimas/{id}",
      *     summary="Update data penerima",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -108,13 +116,15 @@ class PenerimaController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         @OA\JsonContent(
-     *             @OA\Property(property="nama", type="string", maxLength=255),
-     *             @OA\Property(property="alamat", type="string"),
-     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15)
+     *             @OA\Property(property="nama", type="string", maxLength=255, example="Jane Doe"),
+     *             @OA\Property(property="alamat", type="string", example="Jl. Thamrin No. 456, Jakarta"),
+     *             @OA\Property(property="nomor_telepon", type="string", maxLength=15, example="081234567891")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Penerima berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function update(Request $request, $id)
@@ -149,6 +159,7 @@ class PenerimaController extends Controller
      *     path="/api/penerimas/{id}",
      *     summary="Hapus penerima",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -156,7 +167,8 @@ class PenerimaController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200, description="Penerima berhasil dihapus"),
-     *     @OA\Response(response=404, description="Penerima tidak ditemukan")
+     *     @OA\Response(response=404, description="Penerima tidak ditemukan"),
+     *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
     public function destroy($id)
@@ -185,13 +197,16 @@ class PenerimaController extends Controller
      *     path="/api/penerimas/filter/nama",
      *     summary="Filter penerima berdasarkan nama (partial match)",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="nama",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
-     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByNama(Request $request)
@@ -222,13 +237,16 @@ class PenerimaController extends Controller
      *     path="/api/penerimas/filter/nomor_telepon",
      *     summary="Filter penerima berdasarkan nomor telepon (exact match)",
      *     tags={"Penerima"},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="nomor_telepon",
      *         in="query",
      *         required=true,
      *         @OA\Schema(type="string", maxLength=15)
      *     ),
-     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil")
+     *     @OA\Response(response=200, description="Data penerima yang difilter berhasil diambil"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=422, description="Validation Error")
      * )
      */
     public function filterByNomorTelepon(Request $request)
